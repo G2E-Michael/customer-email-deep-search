@@ -1,0 +1,4 @@
+id,name,domains,country,notes
+E01,Lumen Events Ltd,lumen-events.example,UK,示例行：域名不解析，换成真实清单
+E02,Velas del Sur;Velas Sur Retail,velas-del-sur.example;velas.example,ES,示例行：一家多域写法
+E03,Nordlicht Deko GmbH,nordlicht-deko.example,DE,示例行

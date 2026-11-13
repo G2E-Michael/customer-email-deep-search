@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "customer-email-deep-search"
+version = "0.1.0"
+description = "Mine many public email addresses per company domain from official pages, with evidence and A/B/C probability grades. No SMTP probing."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Michael Yang" }]
+keywords = ["email", "b2b", "lead-generation", "osint", "web-crawler"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/G2E-Michael/customer-email-deep-search"
+
+[project.scripts]
+ceds = "ceds.cli:main"
+
+[tool.setuptools]
+packages = ["ceds"]
