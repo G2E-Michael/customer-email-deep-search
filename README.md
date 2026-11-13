@@ -22,7 +22,7 @@
 
 ## 安装
 
-零第三方依赖，Python 3.9+ 即可：
+零第三方依赖，Python 3.10+ 即可：
 
 ```bash
 git clone https://github.com/G2E-Michael/customer-email-deep-search.git
