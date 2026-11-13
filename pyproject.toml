@@ -7,7 +7,7 @@ name = "customer-email-deep-search"
 version = "0.1.0"
 description = "Mine many public email addresses per company domain from official pages, with evidence and A/B/C probability grades. No SMTP probing."
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [{ name = "Michael Yang" }]
 keywords = ["email", "b2b", "lead-generation", "osint", "web-crawler"]
