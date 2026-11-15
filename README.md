@@ -4,6 +4,8 @@
 
 为 B2B 冷启动找收件地址而写。不是爬虫框架，也不是“邮箱验证器”。
 
+> **English**: Feed it a customer list (company + domain); it crawls the company's own pages and one `"@domain"` search per domain, returns every address it can see with evidence URLs and an A/B/C probability grade. No SMTP probing, no commercial verification API. Zero dependencies, Python 3.10+.
+
 ---
 
 ## 它做什么 / 不做什么
@@ -37,7 +39,28 @@ export DEEPSEEK_API_KEY=sk-...        # Windows: set DEEPSEEK_API_KEY=sk-...
 # 或者写进 ~/.dsh/.env，程序会自动读取其中的 DEEPSEEK_API_KEY
 ```
 
-不加 `--search` 就完全离线：只爬官网，不花钱。
+加 `--local-only` 就完全离线：只爬官网，不花钱。不加时默认会走搜索通道（每个域名一条检索，约 $0.00075）。
+
+## 作为 DSH 技能安装（一次装好，所有项目通用）
+
+DSH 在每次会话启动时扫描用户级技能目录 `~/.dsh/skills/<name>/SKILL.md`（Windows：`C:\Users\<你>\.dsh\skills\`），按 `SKILL.md` 里 `name` / `description` 决定何时调用。
+
+```powershell
+# 1) 复制到全局技能目录
+$dst = "$env:USERPROFILE\.dsh\skills\customer-email-deep-search"
+New-Item -ItemType Directory -Force -Path $dst | Out-Null
+Copy-Item -Recurse -Force .\customer-email-deep-search\* $dst
+
+# 2) 从任意项目调用：不用 cd、不用 PYTHONPATH、不用 pip install
+python -X utf8 "$dst\run.py" run --customers .\customers.csv --out .\out
+```
+
+- 装好的目录就是本仓库的完整副本（去掉 `.git`），`run.py` 负责把 `ceds/` 加进 `sys.path`。
+- 技能名与目录名一致：`customer-email-deep-search`。DSH 只在会话启动时扫描，装完要新开一个会话；当前会话的技能列表不会热加载。
+- 更新：重新覆盖目录即可，无版本锁定；也可以 `git pull` 到仓库再复制一次。
+- 想只在当前项目生效，就放到 `<项目>/.dsh/skills/customer-email-deep-search/`（项目级优先于用户级）。
+
+装好之后，直接对 agent 说「按这份客户清单挖邮箱」，它会去调用本技能，而不是临时写脚本。
 
 ## 输入
 
@@ -109,6 +132,7 @@ D02,Velas y Candelas,velasycandelas.com,ES,蜡烛零售
 ## 目录
 
 ```
+run.py          入口脚本（把 ceds/ 加进 sys.path，任意目录可跑）
 ceds/
   cli.py       命令行入口
   extract.py   邮箱正则、[at]/[dot] 归一化、占位符过滤

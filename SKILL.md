@@ -20,14 +20,22 @@ description: 给定客户清单（公司名 + 域名），从公开网页与搜�
 
 ## 跑法
 
-```bash
-python -m ceds run --customers customers.csv --out out/            # 官网 + 搜索
-python -m ceds run --customers customers.csv --out out/ --local-only   # 只爬官网，零成本
-python -m ceds dns --domains a.com,b.de                             # 只看域名健康
-python -m ceds score --in out/addresses.csv --out out/ranked.csv    # 重算评分
+技能装在 `~/.dsh/skills/customer-email-deep-search/`（Windows：`C:\Users\<你>\.dsh\skills\customer-email-deep-search\`），
+**不依赖当前目录**，从任何项目里都能直接调：
+
+```powershell
+$skill = "$env:USERPROFILE\.dsh\skills\customer-email-deep-search\run.py"
+
+python -X utf8 $skill run --customers customers.csv --out out\            # 官网 + 搜索
+python -X utf8 $skill run --customers customers.csv --out out\ --local-only   # 只爬官网，零成本
+python -X utf8 $skill dns --domains a.com,b.de                            # 只看域名健康
 ```
 
-Key 从环境变量 `DEEPSEEK_API_KEY` 或 `~/.dsh/.env` 读取。
+在仓库目录里开发时，`python -m ceds ...` 与 `python run.py ...` 等价。
+
+参数：`--max-pages`（每域最多抓几页，默认 12）、`--workers`（并发，默认 6）、`--limit`（只跑前 N 家，调试）、`--api-key`。
+
+Key 从环境变量 `DEEPSEEK_API_KEY` 或 `~/.dsh/.env` 读取；没有 key 时自动跳过搜索通道，只爬官网。
 
 ## 流程
 
